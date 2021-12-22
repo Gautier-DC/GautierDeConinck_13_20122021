@@ -1,8 +1,8 @@
-import logo from "../../assets/img/argentBankLogo.png";
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import colors from '../../utils/style/colors';
 
 const SrOnly = styled.h1`
     border: 0 !important;
@@ -30,7 +30,7 @@ const HeaderContainer = styled.header`
     }
     
     a.router-link-exact-active {
-        color: #42b983;
+        color: ${colors.activeLink};
     }
 ` 
 
@@ -52,6 +52,17 @@ const NavItem = styled(Link)`
     }
 `
 
+// {/* <div>
+//     <a class="main-nav-item" href="./user.html">
+//         <i class="fa fa-user-circle"></i>
+//         Tony
+//     </a>
+//     <a class="main-nav-item" href="./index.html">
+//         <i class="fa fa-sign-out"></i>
+//         Sign Out
+//     </a>
+// </div>  */}
+
 function Header(){
 
     return(
@@ -59,13 +70,13 @@ function Header(){
         <HeaderLogo to='/'>
             <img
                 
-                src={logo}
+                src="./img/argentBankLogo.png"
                 alt="Argent Bank Logo"
             />
             <SrOnly>Argent Bank</SrOnly>
         </HeaderLogo>
         <nav>
-            <NavItem to="./sign-in.html">
+            <NavItem to="./sign-in">
                 <FontAwesomeIcon icon={faUserCircle} />
                 Sign In
             </NavItem>

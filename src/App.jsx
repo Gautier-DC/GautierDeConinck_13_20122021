@@ -5,17 +5,22 @@ import {
   Route
 } from "react-router-dom";
 import Header from './Components/Header';
-import Home from './Pages/home';
+import Footer from './Components/Footer';
+import Home from './Pages/Home';
+import SignIn from './Pages/SignIn';
+import UserDashboard from './Pages/UserDashboard';
 
 function App() {
 
   return (
     <Router>
-      <Header/>
+      <Header />
       <Routes>
-        <Route exact path='/' element={<Home />}>
-        </Route>
-      </Routes>   
+        <Route exact path='/' element={<Home />} />
+        <Route path='/sign-in' element={<SignIn />} />
+        <Route path='/user-dashboard' element={<UserDashboard />} />
+      </Routes>
+      <Footer />
     </Router>
   );
 }

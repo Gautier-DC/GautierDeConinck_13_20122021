@@ -4,6 +4,7 @@ import { createGlobalStyle } from "styled-components";
 import normalize from "./normalize.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
+import colors from "./utils/style/colors";
 
 const GlobalStyle = createGlobalStyle`
 
@@ -17,7 +18,7 @@ const GlobalStyle = createGlobalStyle`
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         text-align: center;
-        color: #2c3e50;
+        color: ${colors.secondary};
     }
     
     body {
