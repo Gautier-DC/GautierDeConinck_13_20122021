@@ -1,5 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { store } from './Redux/Store';
+import { Provider } from 'react-redux';
 import { createGlobalStyle } from "styled-components";
 import normalize from "./normalize.css";
 import App from "./App";
@@ -61,8 +63,10 @@ const GlobalStyle = createGlobalStyle`
 
 ReactDOM.render(
   <React.StrictMode>
-    <GlobalStyle/>
-    <App />
+    <Provider store={store}>
+      <GlobalStyle/>
+      <App />
+    </Provider>
   </React.StrictMode>,
   document.getElementById("root")
 );

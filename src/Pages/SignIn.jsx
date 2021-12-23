@@ -1,8 +1,16 @@
 import React from 'react';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { useDispatch} from 'react-redux'
 import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import colors from '../utils/style/colors';
+import { urlBase } from '../callAPI';
+import { userLogin } from '../Redux/features/login';
+
+
+//CSS Part
 
 const SignInContainer = styled.form`
     box-sizing: border-box;
@@ -50,31 +58,56 @@ const InputRemember = styled.div`
 `
 
 
+//Function part
+
 function SignIn() {
 
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+    const [userName, setUserName] = useState("")
+    const [userPassword, setUserPassword] = useState("")
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        fetch(urlBase + "user/login", {
+            method: "POST",
+            body: JSON.stringify({
+                email: userName,
+                password: userPassword
+            })
+        })
+        .then( async response =>{
+            const data = await response.json()
+            if (response.ok) {
+                dispatch(userLogin(data.body.token))
+                navigate('/user-dashboard')
+            } else {
+                console.log('error', response)
+            }
+        })
+        .catch(error => {
+            console.log(error);
+        })
+    }
     return (
         <main style={{backgroundColor: `${colors.bgcolor}`}}>
             <SignInContainer>
                 <FontAwesomeIcon icon={faUserCircle} style={{fontSize: '5rem'}}/>
                 <h1>Sign In</h1>
-                <form>
+                <form onSubmit={handleSubmit}>
                     <InputWrapper>
                         <label for="username">Username</label>
-                        <input type="text" id="username" />
+                        <input type="text" id="username" onChange={e => setUserName(e.target.value)} />
                     </InputWrapper>
                     <InputWrapper>
                         <label for="password">Password</label>
-                        <input type="password" id="password" />
+                        <input type="password" id="password" onChange={e => setUserPassword(e.target.value)}/>
                     </InputWrapper>
                     <InputRemember>
                         <input type="checkbox" id="remember-me" />
                         <label for="remember-me">Remember me</label>
                     </InputRemember>
-                    {/* <!-- PLACEHOLDER DUE TO STATIC SITE --> */}
                     <SignInButton type="submit">Sign In</SignInButton>
-                    {/* <!-- SHOULD BE THE BUTTON BELOW href="./user.html" -->
-                    <!-- <button class="sign-in-button">Sign In</button> -->
-                    <!--  --> */}
                 </form>
             </SignInContainer>
         </main>

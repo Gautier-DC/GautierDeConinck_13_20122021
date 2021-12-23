@@ -4,6 +4,9 @@ import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import colors from '../../utils/style/colors';
 
+
+//CSS Part
+
 const SrOnly = styled.h1`
     border: 0 !important;
     clip: rect(1px, 1px, 1px, 1px) !important; /* 1 */
@@ -62,6 +65,9 @@ const NavItem = styled(Link)`
 //         Sign Out
 //     </a>
 // </div>  */}
+
+
+//Function Part
 
 function Header(){
 
