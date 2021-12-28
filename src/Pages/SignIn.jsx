@@ -6,13 +6,13 @@ import { useDispatch} from 'react-redux'
 import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import colors from '../utils/style/colors';
-import { urlBase } from '../callAPI';
+import { postLogin } from '../callAPI'
 import { userLogin } from '../Redux/features/login';
 
 
 //CSS Part
 
-const SignInContainer = styled.form`
+const SignInContainer = styled.section`
     box-sizing: border-box;
     background-color: white;
     width: 300px;
@@ -69,21 +69,10 @@ function SignIn() {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        fetch(urlBase + "user/login", {
-            method: "POST",
-            body: JSON.stringify({
-                email: userName,
-                password: userPassword
-            })
-        })
-        .then( async response =>{
-            const data = await response.json()
-            if (response.ok) {
-                dispatch(userLogin(data.body.token))
-                navigate('/user-dashboard')
-            } else {
-                console.log('error', response)
-            }
+        postLogin(userName,userPassword)
+        .then( async response => {
+            dispatch(userLogin(response.data.token))
+            navigate('/user-dashboard')
         })
         .catch(error => {
             console.log(error);
