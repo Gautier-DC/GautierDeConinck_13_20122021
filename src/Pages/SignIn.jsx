@@ -6,8 +6,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import colors from "../utils/style/colors";
-import { postLogin } from "../callAPI";
+import { postLogin, postToken } from "../callAPI";
 import { userLogin } from "../Redux/features/login";
+import { handleUserProfile } from "../Redux/features/profil";
 
 //CSS Part
 
@@ -16,7 +17,6 @@ const SignInContainer = styled.section`
   background-color: white;
   width: 300px;
   margin: 0 auto;
-  margin-top: 3rem;
   padding: 2rem;
 `;
 
@@ -66,14 +66,27 @@ function SignIn() {
   const [userPassword, setUserPassword] = useState("");
   const [error, setError] = useState("");
 
+  // When you submit form, post email and password then use token to load the profile
+  // If there is no token then go to error 404
   const handleSubmit = (e) => {
     e.preventDefault();
     postLogin(userName, userPassword)
-      .then(async (response) => {
-          console.log("response", response);
-          dispatch(userLogin(response.data.body.token));
-          console.log("sign in token", response.data.body.token);
-        navigate("/user-dashboard");
+      .then(async (loginResponse) => {
+        const token = loginResponse?.data?.body?.token;
+        if (token) {
+          postToken(token)
+            .then(async (response) => {
+              dispatch(handleUserProfile(response.data.body));
+              dispatch(userLogin(token));
+              navigate("/user-dashboard");
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        } else {
+          console.log('no token detected')
+          navigate("/error");
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -81,16 +94,16 @@ function SignIn() {
       });
   };
   return (
-    <main style={{ backgroundColor: `${colors.bgcolor}` }}>
+    <main style={{ backgroundColor: `${colors.bgcolor}`, height: "auto", padding: '2em 0'}}>
       {logged ? (
-        <p style={{color: '#fff'}}>Vous êtes connecté</p>
+        <p style={{ color: "#fff" }}>Vous êtes connecté</p>
       ) : (
         <SignInContainer>
-          <FontAwesomeIcon icon={faUserCircle} style={{ fontSize: "5rem" }} />
+          <FontAwesomeIcon icon={faUserCircle} style={{ fontSize: "4rem" }} />
           <h1>Sign In</h1>
           <form onSubmit={handleSubmit}>
             <InputWrapper>
-              {error ? <span >{error}</span>: ""} 
+              {error ? <span>{error}</span> : ""}
               <label for="username">Username</label>
               <input type="text" id="username" onChange={(e) => setUserName(e.target.value)} />
             </InputWrapper>

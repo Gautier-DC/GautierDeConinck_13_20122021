@@ -24,6 +24,11 @@ const SrOnly = styled.h1`
   white-space: nowrap !important; /* 3 */
 `;
 
+const FontAwIcon = styled(FontAwesomeIcon)`
+  margin-right: 0.3em;
+  font-size: 1.3em;
+`
+
 const HeaderContainer = styled.header`
   display: flex;
   justify-content: space-between;
@@ -50,8 +55,18 @@ const HeaderLogo = styled(Link)`
   }
 `;
 
+const NavContainer = styled.nav`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+`
+
 const NavItem = styled(Link)`
-  margin-right: 0.5rem;
+  margin-right: 1.3rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 
   :hover {
     text-decoration: underline;
@@ -63,15 +78,14 @@ const NavItem = styled(Link)`
 function Header() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const logged = useSelector((state) => state.login.isLogged);
-  const userFirstName = useSelector((state) => state.profile.firstName);
+  const logged = useSelector((state) => state?.login?.isLogged);
+  const userFirstName = useSelector((state) => state?.profile?.firstName);
 
+  //Log out and return to home page
   const handleLogOut = () => {
     dispatch(userLogout());
     navigate("/");
   };
-
-  console.log("log status", logged);
 
   return (
     <HeaderContainer>
@@ -80,24 +94,24 @@ function Header() {
         <SrOnly>Argent Bank</SrOnly>
       </HeaderLogo>
       <nav>
-        {logged === "true" ? (
-          <>
+        {logged ? (
+          <NavContainer>
             <NavItem to="/user-dashboard">
-              <FontAwesomeIcon icon={faUserCircle} />
+              <FontAwIcon icon={faUserCircle} />
               {userFirstName}
             </NavItem>
-            <NavItem onClick={handleLogOut}>
-              <FontAwesomeIcon icon={faSignOutAlt} />
+            <NavItem to="/" onClick={handleLogOut}>
+              <FontAwIcon icon={faSignOutAlt} />
               Sign Out
             </NavItem>
-          </>
+          </NavContainer>
         ) : (
-          <>
+          <NavContainer>
             <NavItem to="/sign-in">
-              <FontAwesomeIcon icon={faUserCircle} />
+              <FontAwIcon icon={faUserCircle} />
               Sign In
             </NavItem>
-          </>
+          </NavContainer>
         )}
       </nav>
     </HeaderContainer>
