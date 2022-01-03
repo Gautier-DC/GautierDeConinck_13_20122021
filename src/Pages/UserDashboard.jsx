@@ -1,33 +1,25 @@
-import React from 'react';
-// import { Link } from 'react-router-dom';
-import styled from 'styled-components';
-import colors from '../utils/style/colors';
-import Accounts from '../Components/Accounts';
+import React from "react";
+import { useSelector } from "react-redux";
+import colors from "../utils/style/colors";
+import Accounts from "../Components/Accounts";
+import HeroDashboard from "../Components/HeroDashboard";
+import { Navigate } from "react-router-dom";
 
-const HeroContent = styled.div`
-    color: #fff;
-    margin-bottom: 2rem;
-` 
+function UserDashboard() {
+  const logged = useSelector((state) => state.login.isLogged);
 
-const EditButton =  styled.button`
-    border-color: ${colors.primary};
-    background-color: ${colors.primary};
-    color: #fff;
-    font-weight: bold;
-    padding: 10px;
-` 
-
-function UserDashboard(){
-
-    return(
-        <main style={{backgroundColor: `${colors.bgcolor}`, height: 'auto'}}>
-            <HeroContent>
-                <h1>Welcome back<br />Tony Jarvis!</h1>
-                <EditButton>Edit Name</EditButton>
-            </HeroContent>
-            <Accounts />
-        </main>
-    )
+  return (
+    <main style={{ backgroundColor: `${colors.bgcolor}`, height: "auto", padding: '2em 0' }}>
+      {!logged ? (
+        <Navigate to="/sign-in" />
+      ) : (
+        <>
+          <HeroDashboard />
+          <Accounts />
+        </>
+      )}
+    </main>
+  );
 }
 
 export default UserDashboard;
