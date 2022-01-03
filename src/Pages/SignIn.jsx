@@ -104,16 +104,16 @@ function SignIn() {
           <form onSubmit={handleSubmit}>
             <InputWrapper>
               {error ? <span>{error}</span> : ""}
-              <label for="username">Username</label>
+              <label htmlFor="username">Username</label>
               <input type="text" id="username" onChange={(e) => setUserName(e.target.value)} />
             </InputWrapper>
             <InputWrapper>
-              <label for="password">Password</label>
+              <label htmlFor="password">Password</label>
               <input type="password" id="password" onChange={(e) => setUserPassword(e.target.value)} />
             </InputWrapper>
             <InputRemember>
               <input type="checkbox" id="remember-me" />
-              <label for="remember-me">Remember me</label>
+              <label htmlFor="remember-me">Remember me</label>
             </InputRemember>
             <SignInButton type="submit">Sign In</SignInButton>
           </form>

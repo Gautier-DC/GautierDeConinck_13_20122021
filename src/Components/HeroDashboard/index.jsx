@@ -109,11 +109,11 @@ function HeroDashboard() {
           <EditContainer>
             <form onSubmit={handleSubmit}>
               <InputWrapper>
-                <label for="firstName">Change my first name for :</label>
+                <label htmlFor="firstName">Change my first name for :</label>
                 <input type="text" id="firstName" onChange={(e) => setUpdatedFirstName(e.target.value)} />
               </InputWrapper>
               <InputWrapper>
-                <label for="lastName">Change my last name for :</label>
+                <label htmlFor="lastName">Change my last name for :</label>
                 <input type="text" id="lastName" onChange={(e) => setUpdatedLastName(e.target.value)} />
               </InputWrapper>
               <ButtonWrapper>
