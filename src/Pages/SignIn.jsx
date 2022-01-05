@@ -93,6 +93,9 @@ function SignIn() {
         setError(error.status);
       });
   };
+
+  const changeName = (e) => setUserName(e.target.value);
+
   return (
     <main style={{ backgroundColor: `${colors.bgcolor}`, height: "auto", padding: '2em 0'}}>
       {logged ? (
@@ -105,7 +108,7 @@ function SignIn() {
             <InputWrapper>
               {error ? <span>{error}</span> : ""}
               <label htmlFor="username">Username</label>
-              <input type="text" id="username" onChange={(e) => setUserName(e.target.value)} />
+              <input type="text" id="username" onChange={changeName} />
             </InputWrapper>
             <InputWrapper>
               <label htmlFor="password">Password</label>

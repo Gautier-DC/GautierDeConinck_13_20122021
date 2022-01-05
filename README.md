@@ -1,6 +1,32 @@
 # GautierDeConinck_13_20122021
 
-Project 13 of the openclassrooms front-end courses
+Project 13 of the Openclassrooms Front-end developer course, Argent Bank is an application that allow users to connect and consult their bank accounts.
+This project is linked to an API that you can find here (https://github.com/OpenClassrooms-Student-Center/Project-10-Bank-API/).
+
+## Requirements
+
+You need to install Node.js v14.15.4 or latestversion.
+
+You need to run the API on localhost://3001 if you want to access to all the data (you will find how to do it on the API repo directly)
+
+## Used Technologies
+
+- React :
+  - Create react app 
+  - PropTypes 
+  - ReactRouter 
+  - Styled-components 
+  - React Redux and redux Toolkit
+- Axios 
+- Immer
+
+## Install
+
+- Clone the following repository https://github.com/Gautier-DC/GautierDeConinck_13_20122021
+
+- Open your local folder in your code editor then, in a new terminal, run `npm install`
+
+You are all ready.
 
 # Getting Started with Create React App
 
