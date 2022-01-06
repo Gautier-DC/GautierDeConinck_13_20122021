@@ -9,6 +9,7 @@ import colors from "../utils/style/colors";
 import { postLogin, postToken } from "../callAPI";
 import { userLogin } from "../Redux/features/login";
 import { handleUserProfile } from "../Redux/features/profil";
+import { Navigate } from "react-router-dom";
 
 //CSS Part
 
@@ -81,38 +82,41 @@ function SignIn() {
               navigate("/user-dashboard");
             })
             .catch((error) => {
+              setError(error);
               console.log(error);
             });
         } else {
-          console.log('no token detected')
+          console.log("no token detected");
           navigate("/error");
         }
       })
       .catch((error) => {
         console.log(error);
-        setError(error.status);
+        setError(error);
       });
   };
 
-  const changeName = (e) => setUserName(e.target.value);
+  //Avoid anonymous function in form
+  const onChangeName = (e) => setUserName(e.target.value);
+  const onChangePassword = (e) => setUserPassword(e.target.value);
 
   return (
-    <main style={{ backgroundColor: `${colors.bgcolor}`, height: "auto", padding: '2em 0'}}>
+    <main style={{ backgroundColor: `${colors.bgcolor}`, height: "auto", padding: "2em 0" }}>
       {logged ? (
-        <p style={{ color: "#fff" }}>Vous êtes connecté</p>
+        <Navigate to="/user-dashboard" />
       ) : (
         <SignInContainer>
           <FontAwesomeIcon icon={faUserCircle} style={{ fontSize: "4rem" }} />
           <h1>Sign In</h1>
           <form onSubmit={handleSubmit}>
+            {error ? <p style={{ color: "#e74c3c" }}>Wrong login or password</p> : ""}
             <InputWrapper>
-              {error ? <span>{error}</span> : ""}
               <label htmlFor="username">Username</label>
-              <input type="text" id="username" onChange={changeName} />
+              <input type="text" id="username" onChange={onChangeName} />
             </InputWrapper>
             <InputWrapper>
               <label htmlFor="password">Password</label>
-              <input type="password" id="password" onChange={(e) => setUserPassword(e.target.value)} />
+              <input type="password" id="password" onChange={onChangePassword} />
             </InputWrapper>
             <InputRemember>
               <input type="checkbox" id="remember-me" />
