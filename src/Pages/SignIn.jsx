@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import colors from "../utils/style/colors";
@@ -10,6 +10,7 @@ import { postLogin, postToken } from "../callAPI";
 import { userLogin } from "../Redux/features/login";
 import { handleUserProfile } from "../Redux/features/profil";
 import { Navigate } from "react-router-dom";
+import { useLogged } from "../CustomHooks";
 
 //CSS Part
 
@@ -62,15 +63,20 @@ const InputRemember = styled.div`
 function SignIn() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const logged = useSelector((state) => state.login.isLogged);
+  const logged = useLogged();
   const [userName, setUserName] = useState("");
   const [userPassword, setUserPassword] = useState("");
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   // When you submit form, post email and password then use token to load the profile
   // If there is no token then go to error 404
   const handleSubmit = (e) => {
     e.preventDefault();
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
     postLogin(userName, userPassword)
       .then(async (loginResponse) => {
         const token = loginResponse?.data?.body?.token;
@@ -122,7 +128,13 @@ function SignIn() {
               <input type="checkbox" id="remember-me" />
               <label htmlFor="remember-me">Remember me</label>
             </InputRemember>
-            <SignInButton type="submit">Sign In</SignInButton>
+            <SignInButton
+              type="submit"
+              disabled={isLoading}
+              style={{ backgroundColor: isLoading ? "#95a5a6" : "", borderColor: isLoading ? "#95a5a6" : "" }}
+            >
+              Sign In
+            </SignInButton>
           </form>
         </SignInContainer>
       )}

@@ -1,10 +1,11 @@
 import React from "react";
 import { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import colors from "../../utils/style/colors";
 import { putEditProfil } from "../../callAPI";
 import { handleUserProfile } from "../../Redux/features/profil";
+import { useToken, useFirstName, useLastName } from "../../CustomHooks";
 
 //CSS Part
 
@@ -107,15 +108,15 @@ const ButtonWrapper = styled.div`
 
 function HeroDashboard() {
   const dispatch = useDispatch();
-  const userToken = useSelector((state) => state.login.token);
-  const userFirstName = useSelector((state) => state.profile.firstName);
-  const userLastName = useSelector((state) => state.profile.lastName);
+  const userToken = useToken();
+  const userFirstName = useFirstName();
+  const userLastName = useLastName();
 
   const [editing, setEditing] = useState(false);
   const [updatedFirstName, setUpdatedFirstName] = useState(userFirstName);
   const [updatedLastName, setUpdatedLastName] = useState(userLastName);
   const [serverError, setServerError] = useState(false);
-
+  
   //function to switch between view and editing mode
   const handleEdit = () => {
     setEditing((prevState) => !prevState);

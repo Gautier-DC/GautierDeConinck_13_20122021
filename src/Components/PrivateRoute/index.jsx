@@ -1,10 +1,10 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useLogged } from "../../CustomHooks";
 
 
 function PrivateRoute({component: RouteComponent}) {
-    const logged = useSelector((state) => state.login.isLogged);
+    const logged = useLogged();;
 
     if(logged) {
         return <RouteComponent />
