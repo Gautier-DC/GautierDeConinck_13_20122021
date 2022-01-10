@@ -74,9 +74,6 @@ function SignIn() {
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 2000);
     postLogin(userName, userPassword)
       .then(async (loginResponse) => {
         const token = loginResponse?.data?.body?.token;
@@ -99,6 +96,7 @@ function SignIn() {
       .catch((error) => {
         console.log(error);
         setError(error);
+        setIsLoading(false);
       });
   };
 
