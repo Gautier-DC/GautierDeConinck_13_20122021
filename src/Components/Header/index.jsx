@@ -85,6 +85,7 @@ function Header() {
   //Log out and return to home page
   const handleLogOut = () => {
     dispatch(userLogout());
+    localStorage.clear();
     navigate("/");
   };
 

@@ -7,86 +7,121 @@ info:
 host: "localhost:3001"
 basePath: "/api/v1"
 tags:
-- name: "User module"
-  description: "Everything action that you can do as user"
-- name: "transactions"
-  description: "Check and add informations to your transactions"
+  - name: "User module"
+    description: "Everything action that you can do as user"
+  - name: "transactions"
+    description: "Check and add informations to your transactions"
 schemes:
-- "https"
-- "http"
+  - "https"
+  - "http"
 paths:
   /transactions:
     get:
       security:
         - Bearer: []
       tags:
-      - "transactions"
+        - "transactions"
       summary: "Returns all transactions from all accounts"
       description: ""
       operationId: "getTransactions"
       consumes:
-      - "application/json"
-      - "application/xml"
+        - "application/json"
+        - "application/xml"
       produces:
-      - "application/xml"
-      - "application/json"
+        - "application/xml"
+        - "application/json"
       parameters:
-      - in: "header"
-        name: "Authorization"
-        description: "Attach Bearer JWT token"
-        type: "string"
-        required: true
-      - in: "body"
-        name: "body"
-        description: "Account Payload"
-        required: true
-        schema:
-          $ref: "#/definitions/Account"
+        - in: "header"
+          name: "Authorization"
+          description: "Attach Bearer JWT token"
+          type: "string"
+          required: true
       responses:
         "200":
           description: "User's transactions loaded"
           schema:
-            $ref: "#/definitions/ResponseTransactions"
+            $ref: "#/definitions/ApiResponseTransactions"
         "404":
           description: "Not found"
         "500":
           description: "Internal Server Error"
   /transactions/{transactionId}:
+    post:
+      security:
+        - Bearer: []
+      tags:
+        - "transaction"
+      summary: "Create a transaction details by ID"
+      description: ""
+      operationId: "createTransaction"
+      consumes:
+        - "application/json"
+        - "application/xml"
+      produces:
+        - "application/xml"
+        - "application/json"
+      parameters:
+        - name: "transactionId"
+          in: "path"
+          description: "ID of transaction to return"
+          required: true
+          type: "integer"
+          format: "int64"
+        - in: "header"
+          name: "Authorization"
+          description: "Attach Bearer JWT token"
+          type: "string"
+          required: true
+        - in: "body"
+          name: "body"
+          description: "Transaction Payload"
+          required: true
+          schema:
+            $ref: "#/definitions/TransactionDetails"
+      responses:
+        "200":
+          description: "Transaction created"
+          schema:
+            $ref: "#/definitions/TransactionDetails"
+        "400":
+          description: "Bad request"
+        "500":
+          description: "Internal Server Error"
     get:
       security:
         - Bearer: []
       tags:
-      - "transactions"
+        - "transaction"
       summary: "Returns a transaction details by ID"
       description: ""
       operationId: "getTransaction"
       consumes:
-      - "application/json"
-      - "application/xml"
+        - "application/json"
+        - "application/xml"
       produces:
-      - "application/xml"
-      - "application/json"
+        - "application/xml"
+        - "application/json"
       parameters:
-      - name: "transactionId"
-        in: "path"
-        description: "ID of transaction to return"
-        required: true
-        type: "integer"
-        format: "int64"
-      - in: "header"
-        name: "Authorization"
-        description: "Attach Bearer JWT token"
-        type: "string"
-        required: true
-      - in: "body"
-        name: "body"
-        description: "Account Payload"
-        required: true
-        schema:
-          $ref: "#/definitions/TransactionId"
+        - name: "transactionId"
+          in: "path"
+          description: "ID of transaction to return"
+          required: true
+          type: "integer"
+          format: "int64"
+        - in: "header"
+          name: "Authorization"
+          description: "Attach Bearer JWT token"
+          type: "string"
+          required: true
+        - in: "body"
+          name: "body"
+          description: "Transaction Payload"
+          required: true
+          schema:
+            $ref: "#/definitions/TransactionId"
       responses:
         "200":
-          description: "User's transactions loaded"
+          description: "User's transaction detail loaded"
           schema:
             $ref: "#/definitions/TransactionDetails"
         "404":
@@ -97,45 +132,44 @@ paths:
       security:
         - Bearer: []
       tags:
-      - "transactions"
+        - "transaction"
       summary: "Update Details"
       description: "Change manually category and notes of a transaction"
       operationId: "putDetails"
       consumes:
-      - "application/json"
-      - "application/xml"
+        - "application/json"
+        - "application/xml"
       produces:
-      - "application/xml"
-      - "application/json"
+        - "application/xml"
+        - "application/json"
       parameters:
-      - name: "transactionId"
-        in: "path"
-        description: "ID of transaction to return"
-        required: true
-        type: "integer"
-        format: "int64"
-      - in: "header"
-        name: "Authorization"
-        description: "Attach Bearer JWT token"
-        type: "string"
-        required: true
-      - in: "body"
-        name: "body"
-        description: "Updated category Payload"
-        required: true
-        schema:
-          $ref: "#/definitions/UpdatedTransaction"
+        - name: "transactionId"
+          in: "path"
+          description: "ID of transaction to return"
+          required: true
+          type: "integer"
+          format: "int64"
+        - in: "header"
+          name: "Authorization"
+          description: "Attach Bearer JWT token"
+          type: "string"
+          required: true
+        - in: "body"
+          name: "body"
+          description: "Updated details Payload"
+          required: true
+          schema:
+            $ref: "#/definitions/UpdatedTransaction"
       responses:
         "200":
           description: "User's transactions loaded"
           schema:
-            $ref: "#/definitions/ApiResponseTransaction"
+            $ref: "#/definitions/TransactionDetails"
         "404":
           description: "Not found"
         "500":
           description: "Internal Server Error"
-    
-          
+
 securityDefinitions:
   Bearer:
     type: "apiKey"
@@ -144,36 +178,33 @@ securityDefinitions:
 definitions:
   ApiResponseTransactions:
     type: "object"
-      properties:
-        status:
-          type: "integer"
-          format: "int64"
-        message:
-          type: "string"
-        body:
+    properties:
+      status:
+        type: "integer"
+        format: "int64"
+      message:
+        type: "string"
+      body:
+        type: "array"
+        description: "array of transaction"
+        items:
           type: "object"
           properties:
-            transactions: 
-            type: "array"
-            description: "array of transaction"
-            properties:
-              transaction:
-              type: "object"
-                id:
-                  type: "integer"
-                  description: "id of the transaction"
-                transactionDate:
-                  type: "string"
-                  description: "effective date of the transaction"
-                title:
-                  type: "string"
-                  description: "quick description of the transaction"
-                amount:
-                  type: "number"
-                  description: "amount of the transaction"
-                balance:
-                  type: "number"
-                  description: "total balance of the linked account"
+            id:
+              type: "integer"
+              description: "id of the transaction"
+            transactionDate:
+              type: "string"
+              description: "effective date of the transaction"
+            title:
+              type: "string"
+              description: "quick description of the transaction"
+            amount:
+              type: "number"
+              description: "amount of the transaction"
+            balance:
+              type: "number"
+              description: "total balance of the linked account"
   TransactionId:
     type: "object"
     properties:
@@ -183,29 +214,55 @@ definitions:
   UpdatedTransaction:
     type: "object"
     properties:
-      category:
+      status:
+        type: "integer"
+        format: "int64"
+      message:
         type: "string"
-        description: "category of this transaction"
-      notes:
-        type: "string"
-        description: "personnal note of the user about this transaction"
+      body:
+        type: "object"
+        properties:
+          transactionType:
+            type: "string"
+            description: "type of the transaction"
+          category:
+            type: "string"
+            description: "category of this transaction"
+          notes:
+            type: "string"
+            description: "personnal note of the user about this transaction"
   TransactionDetails:
-      type: "object"
-      properties:
-        status:
-          type: "integer"
-          format: "int64"
-        message:
-          type: "string"
-        body:
-          type: "object"
-          properties:
-            transactionType:
-              type: "string"
-              description: "type of the transaction"
-            category:
-              type: "string"
-              description: "category of this transaction"
-            notes:
-              type: "string"
-              description: "personnal note of the user about this transaction"
+    type: "object"
+    properties:
+      status:
+        type: "integer"
+        format: "int64"
+      message:
+        type: "string"
+      body:
+        type: "object"
+        properties:
+          id:
+            type: "integer"
+            description: "id of the transaction"
+          transactionDate:
+            type: "string"
+            description: "effective date of the transaction"
+          title:
+            type: "string"
+            description: "quick description of the transaction"
+          amount:
+            type: "number"
+            description: "amount of the transaction"
+          balance:
+            type: "number"
+            description: "total balance of the linked account"
+          transactionType:
+            type: "string"
+            description: "type of the transaction"
+          category:
+            type: "string"
+            description: "category of this transaction"
+          notes:
+            type: "string"
+            description: "personnal note of the user about this transaction"

@@ -1,5 +1,6 @@
 import React from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
@@ -82,6 +83,8 @@ function SignIn() {
             .then(async (response) => {
               dispatch(handleUserProfile(response.data.body));
               dispatch(userLogin(token));
+              localStorage.setItem('token', token)
+              console.log('////sign in/////', localStorage.getItem("token"))
               navigate("/user-dashboard");
             })
             .catch((error) => {
