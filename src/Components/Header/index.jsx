@@ -7,6 +7,7 @@ import { faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import colors from "../../utils/style/colors";
 import { userLogout } from "../../Redux/features/login";
+import { useLogged } from "../../CustomHooks";
 
 //CSS Part
 
@@ -78,12 +79,13 @@ const NavItem = styled(Link)`
 function Header() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const logged = useSelector((state) => state?.login?.isLogged);
+  const logged = useLogged();
   const userFirstName = useSelector((state) => state?.profile?.firstName);
 
   //Log out and return to home page
   const handleLogOut = () => {
     dispatch(userLogout());
+    localStorage.clear();
     navigate("/");
   };
 

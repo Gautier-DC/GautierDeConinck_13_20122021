@@ -1,10 +1,11 @@
 import React from "react";
 import { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import colors from "../../utils/style/colors";
 import { putEditProfil } from "../../callAPI";
 import { handleUserProfile } from "../../Redux/features/profil";
+import { useToken, useFirstName, useLastName } from "../../CustomHooks";
 
 //CSS Part
 
@@ -25,6 +26,20 @@ const GreenButton = styled.button`
   min-width: 130px;
 `;
 
+const SaveButton = styled.button`
+  border-color: ${colors.primary};
+  background-color: ${colors.primary};
+  color: #fff;
+  font-weight: bold;
+  padding: 10px;
+  min-width: 130px;
+  margin-bottom: 1em;
+  @media (min-width: 414px) {
+    margin-right: 1.5em;
+    margin-bottom: 0em;
+  }
+`;
+
 const RedButton = styled.button`
   border-color: #d63031;
   background-color: #d63031;
@@ -37,10 +52,24 @@ const RedButton = styled.button`
 const EditContainer = styled.section`
   box-sizing: border-box;
   background-color: white;
-  width: 600px;
+  width: 80%;
+  max-width: 600px;
   margin: 0 auto;
-  margin-top: 3rem;
-  padding: 2rem;
+  margin-top: 2rem;
+  padding: 1.5rem;
+`;
+
+const InputContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  @media (min-width: 768px) {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
 `;
 
 const InputWrapper = styled.div`
@@ -48,6 +77,10 @@ const InputWrapper = styled.div`
   flex-direction: column;
   text-align: left;
   margin-bottom: 1rem;
+  width: 100%;
+  @media (min-width: 768px) {
+    flex-basis: 48%;
+  }
 
   label {
     font-weight: bold;
@@ -61,26 +94,28 @@ const InputWrapper = styled.div`
 
 const ButtonWrapper = styled.div`
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  margin: 0 auto;
-  width: 60%;
+  width: 100%;
+  @media (min-width: 414px) {
+    display: flex;
+    flex-direction: row;
+  }
 `;
 
 // Function part
 
 function HeroDashboard() {
   const dispatch = useDispatch();
-  const userToken = useSelector((state) => state.login.token);
-  const userFirstName = useSelector((state) => state.profile.firstName);
-  const userLastName = useSelector((state) => state.profile.lastName);
+  const userToken = useToken();
+  const userFirstName = useFirstName();
+  const userLastName = useLastName();
 
   const [editing, setEditing] = useState(false);
   const [updatedFirstName, setUpdatedFirstName] = useState(userFirstName);
   const [updatedLastName, setUpdatedLastName] = useState(userLastName);
   const [serverError, setServerError] = useState(false);
-
 
   //function to switch between view and editing mode
   const handleEdit = () => {
@@ -101,6 +136,10 @@ function HeroDashboard() {
       });
   };
 
+  //Avoid anonymous function in formular
+  const updtFirstname = (e) => setUpdatedFirstName(e.target.value);
+  const updtLastname = (e) => setUpdatedLastName(e.target.value);
+
   return (
     <HeroContent>
       {editing ? (
@@ -108,16 +147,18 @@ function HeroDashboard() {
           <Title> Set your profile</Title>
           <EditContainer>
             <form onSubmit={handleSubmit}>
-              <InputWrapper>
-                <label htmlFor="firstName">Change my first name for :</label>
-                <input type="text" id="firstName" onChange={(e) => setUpdatedFirstName(e.target.value)} />
-              </InputWrapper>
-              <InputWrapper>
-                <label htmlFor="lastName">Change my last name for :</label>
-                <input type="text" id="lastName" onChange={(e) => setUpdatedLastName(e.target.value)} />
-              </InputWrapper>
+              <InputContainer>
+                <InputWrapper>
+                  <label htmlFor="firstName"></label>
+                  <input placeholder={userFirstName} type="text" id="firstName" onChange={updtFirstname} />
+                </InputWrapper>
+                <InputWrapper>
+                  <label htmlFor="lastName"></label>
+                  <input placeholder={userLastName} type="text" id="lastName" onChange={updtLastname} />
+                </InputWrapper>
+              </InputContainer>
               <ButtonWrapper>
-                <GreenButton type="submit">Save</GreenButton>
+                <SaveButton type="submit">Save</SaveButton>
                 <RedButton onClick={handleEdit}>Cancel</RedButton>
               </ButtonWrapper>
             </form>
