@@ -1,5 +1,5 @@
 import React from "react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Header from "./Components/Header";
 import Footer from "./Components/Footer";
@@ -18,7 +18,6 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log('---in App---', localStorage.getItem("token"))
     const token = localStorage.getItem("token")
     if (token) {
       postToken(token)

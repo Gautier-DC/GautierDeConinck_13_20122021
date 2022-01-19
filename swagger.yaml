@@ -26,9 +26,7 @@ paths:
       operationId: "getTransactions"
       consumes:
         - "application/json"
-        - "application/xml"
       produces:
-        - "application/xml"
         - "application/json"
       parameters:
         - in: "header"
@@ -56,9 +54,7 @@ paths:
       operationId: "createTransaction"
       consumes:
         - "application/json"
-        - "application/xml"
       produces:
-        - "application/xml"
         - "application/json"
       parameters:
         - name: "transactionId"
@@ -97,9 +93,7 @@ paths:
       operationId: "getTransaction"
       consumes:
         - "application/json"
-        - "application/xml"
       produces:
-        - "application/xml"
         - "application/json"
       parameters:
         - name: "transactionId"
@@ -138,9 +132,7 @@ paths:
       operationId: "putDetails"
       consumes:
         - "application/json"
-        - "application/xml"
       produces:
-        - "application/xml"
         - "application/json"
       parameters:
         - name: "transactionId"

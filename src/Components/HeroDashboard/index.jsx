@@ -116,7 +116,7 @@ function HeroDashboard() {
   const [updatedFirstName, setUpdatedFirstName] = useState(userFirstName);
   const [updatedLastName, setUpdatedLastName] = useState(userLastName);
   const [serverError, setServerError] = useState(false);
-  
+
   //function to switch between view and editing mode
   const handleEdit = () => {
     setEditing((prevState) => !prevState);

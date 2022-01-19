@@ -1,6 +1,5 @@
 import React from "react";
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
@@ -69,6 +68,7 @@ function SignIn() {
   const [userPassword, setUserPassword] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
 
   // When you submit form, post email and password then use token to load the profile
   // If there is no token then go to error 404
@@ -83,8 +83,9 @@ function SignIn() {
             .then(async (response) => {
               dispatch(handleUserProfile(response.data.body));
               dispatch(userLogin(token));
-              localStorage.setItem('token', token)
-              console.log('////sign in/////', localStorage.getItem("token"))
+              if(rememberMe){
+                localStorage.setItem('token', token)
+              }
               navigate("/user-dashboard");
             })
             .catch((error) => {
@@ -102,6 +103,10 @@ function SignIn() {
         setIsLoading(false);
       });
   };
+
+  const handleRememberMe = () => {
+    setRememberMe((prevState) => !prevState);
+  }
 
   //Avoid anonymous function in form
   const onChangeName = (e) => setUserName(e.target.value);
@@ -126,7 +131,7 @@ function SignIn() {
               <input type="password" id="password" onChange={onChangePassword} />
             </InputWrapper>
             <InputRemember>
-              <input type="checkbox" id="remember-me" />
+              <input type="checkbox" id="remember-me" onClick={handleRememberMe}/>
               <label htmlFor="remember-me">Remember me</label>
             </InputRemember>
             <SignInButton
