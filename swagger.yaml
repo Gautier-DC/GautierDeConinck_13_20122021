@@ -16,6 +16,39 @@ schemes:
   - "http"
 paths:
   /transactions:
+    post:
+      security:
+        - Bearer: []
+      tags:
+        - "transactions"
+      summary: "Create a Transaction"
+      description: ""
+      operationId: "postTransactions"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "header"
+          name: "Authorization"
+          description: "Attach Bearer JWT token"
+          type: "string"
+          required: true
+        - in: "body"
+          name: "body"
+          description: "Transaction Payload"
+          required: true
+          schema:
+            $ref: "#/definitions/Transaction"
+      responses:
+        "200":
+          description: "transaction Created"
+          schema:
+            $ref: "#/definitions/ApiResponseTransaction"
+        "404":
+          description: "Not found"
+        "500":
+          description: "Internal Server Error"
     get:
       security:
         - Bearer: []
@@ -236,6 +269,51 @@ definitions:
             balance:
               type: "number"
               description: "total balance of the linked account"
+  ApiResponseTransaction:
+    type: "object"
+    properties:
+      status:
+        type: "integer"
+        format: "int64"
+      message:
+        type: "string"
+      body:
+        type: "object"
+        description: "return the created transaction"
+        properties:
+          id:
+            type: "integer"
+            description: "id of the transaction"
+          transactionDate:
+            type: "string"
+            description: "effective date of the transaction"
+          title:
+            type: "string"
+            description: "quick description of the transaction"
+          amount:
+            type: "number"
+            description: "amount of the transaction"
+          balance:
+            type: "number"
+            description: "total balance of the linked account"
+  Transaction:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        description: "id of the transaction"
+      transactionDate:
+        type: "string"
+        description: "effective date of the transaction"
+      title:
+        type: "string"
+        description: "quick description of the transaction"
+      amount:
+        type: "number"
+        description: "amount of the transaction"
+      balance:
+        type: "number"
+        description: "total balance of the linked account"
   TransactionId:
     type: "object"
     properties:
