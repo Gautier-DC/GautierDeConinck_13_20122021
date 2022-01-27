@@ -43,7 +43,7 @@ paths:
           description: "Not found"
         "500":
           description: "Internal Server Error"
-  /transactions/{transactionId}:
+  /transactions/{transactionId}/details:
     post:
       security:
         - Bearer: []
@@ -161,6 +161,45 @@ paths:
           description: "Not found"
         "500":
           description: "Internal Server Error"
+    delete:
+      security:
+        - Bearer: []
+      tags:
+        - "transaction"
+      summary: "Delete details"
+      description: "Delete all the details of a transaction"
+      operationId: "deleteDetails"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "transactionId"
+          in: "path"
+          description: "ID of transaction to return"
+          required: true
+          type: "integer"
+          format: "int64"
+        - in: "header"
+          name: "Authorization"
+          description: "Attach Bearer JWT token"
+          type: "string"
+          required: true
+        - in: "body"
+          name: "body"
+          description: "Transaction ID"
+          required: true
+          schema:
+            $ref: "#/definitions/TransactionId"
+      responses:
+        "200":
+          description: "Transaction details delete successfully"
+        "400":
+          description: "Invalid transaction ID supplied"
+        "404":
+          description: "Transaction Not found"
+        "500":
+          description: "Internal Server Error"
 
 securityDefinitions:
   Bearer:
@@ -237,18 +276,6 @@ definitions:
           id:
             type: "integer"
             description: "id of the transaction"
-          transactionDate:
-            type: "string"
-            description: "effective date of the transaction"
-          title:
-            type: "string"
-            description: "quick description of the transaction"
-          amount:
-            type: "number"
-            description: "amount of the transaction"
-          balance:
-            type: "number"
-            description: "total balance of the linked account"
           transactionType:
             type: "string"
             description: "type of the transaction"
